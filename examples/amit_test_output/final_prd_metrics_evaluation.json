@@ -1,0 +1,45 @@
+{
+  "evaluation_metadata": {
+    "timestamp": "2025-08-16 14:47:10",
+    "test_case": "Amit Legal Document Generation - All PRD Metrics",
+    "success_rate": 77.77777777777779,
+    "total_evaluation_time": 1.3619616031646729,
+    "average_score": 0.18451182226676607
+  },
+  "prd_metrics": {
+    "total_metrics": 9,
+    "successful_evaluations": 7,
+    "scores": {
+      "BLEU": 0.1892206579673041,
+      "ROUGE-1": 0.3439490445859873,
+      "ROUGE-2": 0.16774193548387095,
+      "ROUGE-L": 0.267515923566879,
+      "METEOR": 0.3098471344716187,
+      "COMET": null,
+      "LLM_Judge": null,
+      "Redundancy": 0.01330805979170236,
+      "Completeness": 0.0
+    }
+  },
+  "performance_indicators": {
+    "semantic_quality": 0.3098471344716187,
+    "neural_evaluation": null,
+    "ai_assessment": null,
+    "content_coverage": 0.42218400687876184,
+    "content_relevance": 0.7708006279434851,
+    "overall_balance": 0.5455555555555556
+  },
+  "timing_analysis": {
+    "BLEU": 0.015574932098388672,
+    "ROUGE": 0.001047372817993164,
+    "METEOR": 1.3425989151000977,
+    "Redundancy": 0.00244903564453125,
+    "Completeness": 0.0002913475036621094
+  },
+  "document_analysis": {
+    "generated_words": 915,
+    "ground_truth_words": 2173,
+    "length_ratio": 0.4210768522779567,
+    "word_overlap": 491
+  }
+}

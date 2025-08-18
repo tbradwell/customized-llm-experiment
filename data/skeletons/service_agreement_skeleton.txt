@@ -1,0 +1,42 @@
+SERVICE AGREEMENT
+
+This Service Agreement ("Agreement") is entered into on {{contract_date}} between:
+
+CLIENT: {{client_name}}
+Address: {{client_address}}
+Contact: {{client_contact}}
+
+PROVIDER: {{provider_name}}
+Address: {{provider_address}}
+Contact: {{provider_contact}}
+
+1. SCOPE OF SERVICES
+{{service_description}}
+
+The Provider agrees to perform the following services:
+{{detailed_services}}
+
+2. PAYMENT TERMS
+Total Contract Value: {{contract_value}}
+Payment Schedule: {{payment_terms}}
+Payment Method: {{payment_method}}
+
+3. TIMELINE
+Start Date: {{start_date}}
+End Date: {{end_date}}
+Delivery Milestones: {{milestones}}
+
+4. CONFIDENTIALITY
+{{confidentiality_clause}}
+
+5. TERMINATION
+{{termination_conditions}}
+
+6. GENERAL PROVISIONS
+{{general_provisions}}
+
+CLIENT SIGNATURE: _____________________  DATE: _________
+{{client_name}}
+
+PROVIDER SIGNATURE: ___________________  DATE: _________
+{{provider_name}}

@@ -1,0 +1,56 @@
+{
+  "service_agreement_example": {
+    "contract_type": "service_agreement",
+    "contract_date": "February 15, 2024",
+    "client_name": "Innovative Tech Solutions Ltd.",
+    "client_address": "789 Innovation Drive, Tech Valley, NY 12180",
+    "client_contact": "Jennifer Chen, CTO, jennifer@innovativetech.com",
+    "provider_name": "Professional Legal Advisors LLP",
+    "provider_address": "321 Legal Center, Suite 450, Metropolitan City, NY 10001",
+    "provider_contact": "David Thompson, Managing Partner, david@legaladvisors.com",
+    "service_description": "Comprehensive legal support for technology commercialization, intellectual property protection, and regulatory compliance for emerging technologies.",
+    "detailed_services": "Patent application preparation and prosecution, trademark registration and maintenance, regulatory compliance review for FDA and FCC requirements, technology transfer agreement preparation, venture capital legal documentation, employment law consultation for technical staff, data privacy and cybersecurity legal compliance",
+    "contract_value": "$125,000",
+    "payment_terms": "Monthly retainer of $10,417, payable on the first business day of each month",
+    "payment_method": "Electronic funds transfer to Provider's business account",
+    "start_date": "March 1, 2024",
+    "end_date": "February 28, 2025",
+    "milestones": "Patent filing strategy: April 15, 2024; Regulatory compliance audit: June 30, 2024; IP portfolio review: September 15, 2024; Annual compliance report: February 15, 2025",
+    "confidentiality_clause": "All proprietary information, including but not limited to technical specifications, business plans, financial information, customer lists, and strategic initiatives, shall be maintained in strict confidence. This obligation extends to all employees, contractors, and agents of both parties and shall survive termination of this Agreement for seven (7) years.",
+    "termination_conditions": "Either party may terminate this Agreement with ninety (90) days written notice. Immediate termination is permitted for material breach if not cured within thirty (30) days of written notice. Upon termination, all work product becomes the exclusive property of Client, and Provider shall return or destroy all confidential information.",
+    "general_provisions": "This Agreement is governed by New York State law. Disputes shall be resolved through mediation, and if unsuccessful, binding arbitration under AAA Commercial Rules. This Agreement may be executed in counterparts and electronic signatures are binding. Force majeure events excuse performance delays beyond reasonable control of either party."
+  },
+  
+  "nda_example": {
+    "contract_type": "nda",
+    "agreement_date": "March 10, 2024",
+    "disclosing_party_name": "Advanced Robotics Corporation",
+    "disclosing_party_address": "555 Robotics Boulevard, Automation City, CA 95014",
+    "disclosing_party_contact": "Dr. Maria Santos, Chief Technology Officer, maria@advancedrobotics.com",
+    "receiving_party_name": "Strategic Manufacturing Partners Inc.",
+    "receiving_party_address": "1200 Industrial Parkway, Manufacturing Hub, MI 48201",
+    "receiving_party_contact": "Robert Kim, Vice President of Operations, robert@stratmfg.com",
+    "confidential_info_definition": "Confidential Information includes all technical data, algorithms, software code, manufacturing processes, design specifications, financial information, business strategies, customer lists, supplier information, and any other proprietary information disclosed in any form, whether oral, written, electronic, or visual, marked as confidential or which would reasonably be considered confidential given the nature of the information and circumstances of disclosure.",
+    "receiving_party_obligations": "Receiving Party agrees to: (a) maintain all Confidential Information in strict confidence using the same degree of care used for its own confidential information, but no less than reasonable care; (b) not disclose Confidential Information to any third party without prior written consent; (c) use Confidential Information solely for evaluating potential business collaboration; (d) limit access to Confidential Information to employees with a legitimate need to know who have signed appropriate confidentiality agreements; (e) immediately notify Disclosing Party of any unauthorized disclosure or use.",
+    "confidentiality_exceptions": "(a) information that is publicly available through no breach of this Agreement; (b) information independently developed without use of Confidential Information; (c) information received from a third party with right to disclose; (d) information required to be disclosed by law or court order, provided that reasonable notice is given to allow for protective measures",
+    "agreement_duration": "This Agreement shall remain in effect for five (5) years from the date of execution. The obligations of confidentiality shall survive termination for an additional ten (10) years.",
+    "breach_remedies": "Receiving Party acknowledges that breach of this Agreement would cause irreparable harm for which monetary damages would be inadequate. Therefore, Disclosing Party shall be entitled to seek injunctive relief, specific performance, and other equitable remedies, without prejudice to other available remedies including monetary damages and attorney fees.",
+    "return_of_materials": "Upon termination or upon request by Disclosing Party, Receiving Party shall promptly return or destroy all materials containing Confidential Information, including all copies, notes, and derivative works. A written certification of compliance shall be provided within thirty (30) days.",
+    "miscellaneous_provisions": "This Agreement shall be governed by California law without regard to conflict of law principles. Any legal action shall be brought exclusively in the state or federal courts of Santa Clara County, California. This Agreement constitutes the entire agreement regarding confidentiality and supersedes all prior understandings. Amendments must be in writing and signed by both parties."
+  },
+  
+  "consulting_example": {
+    "contract_type": "consulting_agreement",
+    "consultant_name": "Alexandra Martinez, PhD",
+    "consultant_address": "987 Expert Lane, Knowledge City, TX 75201",
+    "consultant_contact": "alexandra@expertconsulting.com, (555) 123-4567",
+    "client_name": "Global Energy Solutions Corp.",
+    "client_address": "2468 Corporate Plaza, Energy District, TX 77002",
+    "client_contact": "Thomas Wilson, Director of Engineering, thomas@globalenergy.com",
+    "engagement_description": "Strategic consulting for renewable energy integration, grid modernization planning, and regulatory compliance for utility-scale solar and wind projects.",
+    "deliverables": "Feasibility analysis reports, regulatory compliance roadmaps, technology integration strategies, risk assessment documentation, project timeline development, stakeholder engagement plans",
+    "compensation": "$150 per hour, with monthly invoicing for actual hours worked, not to exceed $50,000 total without written authorization",
+    "contract_duration": "Six (6) months from April 1, 2024 to September 30, 2024",
+    "intellectual_property": "All work product created specifically for this engagement shall be owned by Client. Consultant retains ownership of pre-existing intellectual property and general methodologies. Client grants Consultant right to use general project outcomes for portfolio and marketing purposes with confidential information redacted."
+  }
+}

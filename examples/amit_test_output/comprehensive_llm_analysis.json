@@ -1,0 +1,37 @@
+{
+  "llm_judge_detailed_analysis": {
+    "evaluation_time_seconds": 33.27068066596985,
+    "full_analysis_text": "**1. Legal Accuracy**\nScore: 3/5\nExplanation: The generated contract uses appropriate legal terms and clauses, but there are some inaccuracies. For example, the contract uses placeholders such as \"{% for p in plaintiffs %}\" and \"{p.PERSON_FULL_NAME}\", which are not valid legal terms or clauses. \nExample: \"{% for p in plaintiffs %}\" and \"{p.PERSON_FULL_NAME}\"\n\n**2. Completeness**\nScore: 3/5\nExplanation: The contract covers many necessary elements, such as the parties involved, the nature of the claim, and the requested remedies. However, it lacks some crucial details, such as the specific amount of the claim and the specific details of the parties involved.\nExample: \"סכום התביעה: נזקי רטיבות ופגיעה ברכוש ₪\"\n\n**3. Professional Language**\nScore: 4/5\nExplanation: The contract uses professional legal language and terminology. However, the use of placeholders detracts from the professionalism of the document.\nExample: \"{d.PERSON_FULL_NAME}, ת.ז. {d.ID}\"\n\n**4. Logical Consistency**\nScore: 3/5\nExplanation: The contract is logically consistent in its structure and flow. However, the use of placeholders disrupts the logical flow of the document.\nExample: \"{~להורות לנתבעת 1 לבצע את כל התיקונים הנדרשים בהתאם לחוות דעת מטעם התובע מיום DATE, ואת כל הבדיקות הנדרשות באמצעות מעבדות מוסמכות ובפיקוח צמוד של מפקח מטעם בית המשפט הנכבד.~}\"\n\n**5. Clarity & Readability**\nScore: 3/5\nExplanation: The contract is generally clear and readable, but the use of placeholders makes it difficult to understand in places.\nExample: \"{d.PERSON_FULL_NAME}, ת.ז. {d.ID}\"\n\n**Overall Assessment Summary**\nThe generated contract has a good structure and uses professional legal language. However, the use of placeholders instead of specific details detracts from its accuracy, completeness, and readability.\n\n**Top 3 Strengths**\n1. Good structure and flow\n2. Use of professional legal language\n3. Coverage of many necessary contract elements\n\n**Top 3 Areas for Improvement**\n1. Use of placeholders instead of specific details\n2. Lack of specific details in some areas\n3. Some inaccuracies in legal terms and clauses\n\n**Top 3 Specific Recommendations**\n1. Replace placeholders with specific details\n2. Include specific details such as the amount of the claim and the details of the parties involved\n3. Review and correct inaccuracies in legal terms and clauses.",
+    "response_length_chars": 2343
+  },
+  "quantitative_error_analysis": {
+    "content_coverage": {
+      "word_overlap": 491,
+      "coverage_rate_percent": 42.21840068787618,
+      "missing_words": 672,
+      "additional_words": 146,
+      "length_efficiency_percent": 42.10768522779567
+    },
+    "structural_analysis": {
+      "generated_sentences": 60,
+      "reference_sentences": 87,
+      "sentence_density_percent": 68.96551724137932
+    },
+    "legal_terminology": {
+      "generated_legal_terms": 4,
+      "reference_legal_terms": 5,
+      "legal_coverage_percent": 80.0
+    }
+  },
+  "quality_scores": {
+    "content_quality": 0.42218400687876184,
+    "structural_quality": 0.6896551724137931,
+    "legal_terminology_quality": 0.8,
+    "overall_quality_index": 0.6372797264308517
+  },
+  "document_statistics": {
+    "generated_word_count": 915,
+    "reference_word_count": 2173,
+    "length_ratio": 0.4210768522779567
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "evaluation_summary": {
+    "test_case": "Amit Legal Document Generation",
+    "total_metrics": 12,
+    "computed_metrics": 10,
+    "average_score": 0.3030122946245165
+  },
+  "metrics_scores": {
+    "BLEU": 0.1892206579673041,
+    "ROUGE-1": 0.3439490445859873,
+    "ROUGE-2": 0.16774193548387095,
+    "ROUGE-L": 0.267515923566879,
+    "METEOR": 0.3098471344716187,
+    "Redundancy": 0.01330805979170236,
+    "Completeness": 0.0,
+    "Word_Recall": 0.42218400687876184,
+    "Word_Precision": 0.7708006279434851,
+    "Word_F1": 0.5455555555555556,
+    "COMET": "Not Available",
+    "LLM_Judge": "Requires API Key"
+  },
+  "document_info": {
+    "generated_words": 915,
+    "ground_truth_words": 2173,
+    "length_ratio": 0.4210768522779567
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "without_iteration": {
+    "content_length": 5451,
+    "metrics": {
+      "bleu": 0.18121202457287924,
+      "rouge": 0.20937408169262417,
+      "comet": 0.7320707440376282,
+      "llm_judge": 2.3500000000000005
+    }
+  },
+  "with_iteration": {
+    "content_length": 3254,
+    "metrics": {
+      "bleu": 0.03743925121358059,
+      "rouge": 0.34433891150309065,
+      "comet": 0.8472943902015686,
+      "llm_judge": 3.6500000000000004
+    },
+    "iteration_details": {
+      "model_used": "gpt-4-turbo",
+      "temperature": 0.1,
+      "prompt_tokens": 5288,
+      "completion_tokens": 4000,
+      "contract_type": "legal_claim",
+      "placeholders_filled": 10,
+      "completion_iterations": 2,
+      "initial_placeholders": 48,
+      "final_placeholders": 0,
+      "completion_success": true,
+      "refinement_iterations": 1,
+      "refinement_complete": true,
+      "final_decision": "NO_CHANGES_NEEDED",
+      "complete_generation": true
+    }
+  },
+  "improvements": {
+    "bleu": -0.14377277335929867,
+    "rouge": 0.13496482981046648,
+    "comet": 0.11522364616394043,
+    "llm_judge": 1.2999999999999998
+  }
+}

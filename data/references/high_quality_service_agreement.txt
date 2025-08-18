@@ -1,0 +1,59 @@
+SERVICE AGREEMENT
+
+This Service Agreement ("Agreement") is entered into on January 15, 2024 between:
+
+CLIENT: TechCorp Solutions Inc.
+Address: 123 Technology Drive, Innovation City, CA 94107
+Contact: Sarah Johnson, Director of Operations, sarah@techcorp.com
+
+PROVIDER: Expert Legal Services LLC
+Address: 456 Professional Plaza, Suite 200, Legal District, CA 94108
+Contact: Michael Rodriguez, Senior Partner, michael@expertlegal.com
+
+1. SCOPE OF SERVICES
+
+Expert Legal Services LLC will provide comprehensive legal consultation and contract review services to TechCorp Solutions Inc. for their ongoing business operations and strategic initiatives.
+
+The Provider agrees to perform the following services:
+- Review and analysis of all commercial contracts exceeding $25,000 in value
+- Legal compliance auditing for technology sector regulations
+- Risk assessment and mitigation strategies for new business partnerships
+- Monthly legal advisory sessions with the executive team
+- Emergency legal consultation services available within 24 hours
+- Preparation of standard contract templates for recurring business needs
+
+2. PAYMENT TERMS
+
+Total Contract Value: $75,000 annually
+Payment Schedule: Quarterly payments of $18,750, due within 30 days of invoice
+Payment Method: Wire transfer or ACH to Provider's designated business account
+
+Late payments will incur a 1.5% monthly service charge. Provider reserves the right to suspend services for payments overdue by more than 30 days.
+
+3. TIMELINE
+
+Start Date: February 1, 2024
+End Date: January 31, 2025
+Delivery Milestones:
+- Initial compliance audit: March 15, 2024
+- Standard template delivery: April 30, 2024
+- Mid-year strategic review: August 15, 2024
+- Annual legal compliance report: January 15, 2025
+
+4. CONFIDENTIALITY
+
+Both parties acknowledge that confidential information may be disclosed during the performance of this Agreement. All proprietary information, trade secrets, business strategies, financial data, and client information shall remain strictly confidential and shall not be disclosed to any third party without prior written consent. This confidentiality obligation shall survive the termination of this Agreement for a period of five (5) years.
+
+5. TERMINATION
+
+Either party may terminate this Agreement with sixty (60) days written notice. In case of material breach, the non-breaching party may terminate immediately upon written notice if the breach is not cured within fifteen (15) days. Upon termination, all confidential information must be returned or destroyed, and all outstanding fees become immediately due and payable.
+
+6. GENERAL PROVISIONS
+
+This Agreement shall be governed by the laws of the State of California. Any disputes shall be resolved through binding arbitration under the rules of the American Arbitration Association. This Agreement constitutes the entire agreement between the parties and may only be modified in writing signed by both parties. If any provision is found unenforceable, the remainder of the Agreement remains in effect.
+
+CLIENT SIGNATURE: _____________________  DATE: 1/15/2024
+Sarah Johnson, TechCorp Solutions Inc.
+
+PROVIDER SIGNATURE: ___________________  DATE: 1/15/2024
+Michael Rodriguez, Expert Legal Services LLC

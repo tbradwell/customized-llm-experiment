@@ -1,0 +1,50 @@
+{
+  "llm_judge_analysis": {
+    "overall_score": 3.0,
+    "evaluation_time_seconds": 16.214168071746826,
+    "passed_threshold": false,
+    "detailed_feedback": {
+      "criteria_scores": {
+        "legal_accuracy": {
+          "score": 3.0,
+          "feedback": "Could not parse specific feedback"
+        },
+        "completeness": {
+          "score": 3.0,
+          "feedback": "Could not parse specific feedback"
+        },
+        "professional_language": {
+          "score": 3.0,
+          "feedback": "Could not parse specific feedback"
+        },
+        "logical_consistency": {
+          "score": 3.0,
+          "feedback": "Could not parse specific feedback"
+        },
+        "clarity_readability": {
+          "score": 3.0,
+          "feedback": "Could not parse specific feedback"
+        }
+      },
+      "detailed_feedback": "```json\n{\n    \"criteria_scores\": {\n        \"legal_accuracy\": {\n            \"score\": 2,\n            \"feedback\": \"The contract contains several placeholders and unresolved template tags (e.g., {p.PERSON_FULL_NAME}, {d.EMAIL}), which significantly undermine its legal accuracy. The use of placeholders where specific legal information should be present (e.g., 'MONEY_AMOUNT') suggests that the contract is incomplete and not ready for use. Additionally, the contract lacks specific details on the damages and remedies sought, which are crucial for legal proceedings.\"\n        },\n        \"completeness\": {\n            \"score\": 2,\n            \"feedback\": \"The contract is incomplete, as evidenced by numerous placeholders and template syntax that have not been replaced with actual data (e.g., {~להורות לנתבעת 1...~}). Critical sections such as the 'תמצית העובדות הנחוצות לביסוס עילת התביעה' are missing substantive content, which is essential for a claim's foundation in a legal context.\"\n        },\n        \"professional_language\": {\n            \"score\": 3,\n            \"feedback\": \"The language used in the contract is generally professional and appropriate for a legal document. However, the presence of placeholders and incomplete sentences disrupts the professional tone and could lead to misunderstandings or misinterpretations of the contract's intent.\"\n        },\n        \"logical_consistency\": {\n            \"score\": 3,\n            \"feedback\": \"The contract maintains a basic logical flow in the arrangement of sections and overall structure. However, the logical progression is occasionally disrupted by incomplete information and placeholders, which could lead to inconsistencies in understanding the obligations and rights of the involved parties.\"\n        },\n        \"clarity_readability\": {\n            \"score\": 2,\n            \"feedback\": \"The clarity of the contract is significantly affected by the extensive use of placeholders and incomplete template tags. This makes the document difficult to read and understand fully without further context or completion of the missing sections.\"\n    },\n    \"overall_assessment\": \"The contract requires significant revisions to address the incomplete and placeholder elements that currently undermine its effectiveness and legal enforceability. It lacks the necessary specificity and completeness to function as a legally binding document.\",\n    \"key_strengths\": [\"Use of professional legal language\", \"Structured layout following conventional legal document standards\"],\n    \"areas_for_implementation\": [\"Replacement of placeholders with specific information\", \"Completion of all sections with relevant legal data\"],\n    \"recommendations\": [\"Complete all placeholders and template tags with the relevant, specific legal information.\", \"Review and ensure all legal claims and remedies are clearly defined and substantiated with factual data.\", \"Conduct a thorough proofreading to enhance clarity and readability, ensuring that the document meets the professional standards expected of legal contracts.\"]\n}\n```",
+      "recommendations": [
+        "Review LLM response format"
+      ],
+      "model_used": "gpt-5",
+      "evaluation_method": "structured_criteria"
+    }
+  },
+  "error_analysis": {
+    "content_coverage_ratio": 0.42218400687876184,
+    "missing_content_words": 672,
+    "additional_content_words": 146,
+    "length_ratio": 0.4210768522779567,
+    "sentence_count_ratio": 0.6896551724137931
+  },
+  "document_comparison": {
+    "generated_word_count": 915,
+    "reference_word_count": 2173,
+    "generated_sentence_count": 60,
+    "reference_sentence_count": 87
+  }
+}

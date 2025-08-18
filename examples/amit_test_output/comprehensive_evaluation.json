@@ -1,0 +1,21 @@
+{
+  "document_stats": {
+    "generated_words": 915,
+    "gt_words": 2173,
+    "generated_chars": 5491,
+    "gt_chars": 12536
+  },
+  "evaluation_metrics": {
+    "jaccard_similarity": 0.37509549274255155,
+    "word_overlap": 491,
+    "word_coverage": 0.42218400687876184
+  },
+  "test_info": {
+    "skeleton": "sekeleton_oracle.docx",
+    "ground_truth": "gt.docx",
+    "new_data_files": [
+      "נזקי רטיבות חיים הרצוג.docx",
+      "DOC-20250322-WA0007.docx"
+    ]
+  }
+}

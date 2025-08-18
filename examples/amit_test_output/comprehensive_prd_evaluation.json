@@ -1,0 +1,47 @@
+{
+  "evaluation_metadata": {
+    "timestamp": "2025-08-16 14:49:35",
+    "test_case": "Amit Legal Document - Complete PRD Evaluation",
+    "success_rate_percent": 100.0,
+    "total_evaluation_time_seconds": 14.869086742401123,
+    "average_score": 0.5199582025814332
+  },
+  "prd_metrics_results": {
+    "successful_count": 9,
+    "failed_count": 0,
+    "scores": {
+      "BLEU": 0.1892206579673041,
+      "ROUGE-1": 0.3439490445859873,
+      "ROUGE-2": 0.16774193548387095,
+      "ROUGE-L": 0.267515923566879,
+      "METEOR": 0.3098471344716187,
+      "COMET": 0.3880410673655366,
+      "LLM_Judge": 3.0,
+      "Redundancy": 0.01330805979170236,
+      "Completeness": 0.0
+    },
+    "failed_metrics": []
+  },
+  "performance_analysis": {
+    "content_coverage_percent": 42.21840068787618,
+    "content_relevance_percent": 77.08006279434852,
+    "balanced_accuracy_percent": 54.55555555555556,
+    "best_metric": "LLM_Judge",
+    "best_score": 3.0
+  },
+  "document_statistics": {
+    "generated_words": 915,
+    "ground_truth_words": 2173,
+    "word_overlap": 491,
+    "length_ratio": 0.4210768522779567
+  },
+  "timing_breakdown": {
+    "BLEU": 0.01618218421936035,
+    "ROUGE": 0.0011501312255859375,
+    "METEOR": 1.3308804035186768,
+    "COMET": 0.0006301403045654297,
+    "LLM_Judge": 13.517482280731201,
+    "Redundancy": 0.0024514198303222656,
+    "Completeness": 0.0003101825714111328
+  }
+}

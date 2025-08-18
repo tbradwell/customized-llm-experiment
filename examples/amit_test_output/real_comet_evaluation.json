@@ -1,0 +1,50 @@
+{
+  "evaluation_metadata": {
+    "timestamp": "2025-08-16 16:16:59",
+    "test_case": "Amit Legal Document - REAL COMET Evaluation",
+    "comet_type": "REAL",
+    "success_rate_percent": 100.0,
+    "total_evaluation_time_seconds": 51.940468549728394,
+    "average_score": 0.560127469414221
+  },
+  "prd_metrics_results": {
+    "successful_count": 9,
+    "failed_count": 0,
+    "scores": {
+      "BLEU": 0.1892206579673041,
+      "ROUGE-1": 0.3439490445859873,
+      "ROUGE-2": 0.16774193548387095,
+      "ROUGE-L": 0.267515923566879,
+      "METEOR": 0.3098471344716187,
+      "COMET": 0.7495644688606262,
+      "LLM_Judge": 3.0,
+      "Redundancy": 0.01330805979170236,
+      "Completeness": 0.0
+    },
+    "failed_metrics": [],
+    "real_comet_score": 0.7495644688606262
+  },
+  "performance_analysis": {
+    "content_coverage_percent": 42.21840068787618,
+    "content_relevance_percent": 77.08006279434852,
+    "balanced_accuracy_percent": 54.55555555555556,
+    "best_metric": "LLM_Judge",
+    "best_score": 3.0,
+    "comet_evaluation": "REAL"
+  },
+  "document_statistics": {
+    "generated_words": 915,
+    "ground_truth_words": 2173,
+    "word_overlap": 491,
+    "length_ratio": 0.4210768522779567
+  },
+  "timing_breakdown": {
+    "BLEU": 0.017987728118896484,
+    "ROUGE": 0.0010614395141601562,
+    "METEOR": 1.451908826828003,
+    "COMET": 38.44689345359802,
+    "LLM_Judge": 12.01770544052124,
+    "Redundancy": 0.004564523696899414,
+    "Completeness": 0.000347137451171875
+  }
+}

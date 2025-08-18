@@ -1,0 +1,38 @@
+{
+  "without_iteration": {
+    "time_seconds": 82.86966133117676,
+    "content_length": 5451,
+    "success": true,
+    "warnings_count": 1,
+    "metadata": {
+      "model_used": "gpt-4-turbo",
+      "temperature": 0.1,
+      "prompt_tokens": 5328,
+      "completion_tokens": 4000,
+      "contract_type": "legal_claim",
+      "placeholders_filled": 10
+    }
+  },
+  "with_iteration": {
+    "time_seconds": 141.66123342514038,
+    "content_length": 3254,
+    "success": true,
+    "warnings_count": 1,
+    "metadata": {
+      "model_used": "gpt-5",
+      "temperature": 0.1,
+      "prompt_tokens": 5328,
+      "completion_tokens": 4000,
+      "contract_type": "legal_claim",
+      "placeholders_filled": 10,
+      "completion_iterations": 2,
+      "initial_placeholders": 48,
+      "final_placeholders": 0,
+      "completion_success": true,
+      "refinement_iterations": 1,
+      "refinement_complete": true,
+      "final_decision": "NO_CHANGES_NEEDED",
+      "complete_generation": true
+    }
+  }
+}

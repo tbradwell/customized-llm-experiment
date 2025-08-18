@@ -1,0 +1,39 @@
+NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement ("Agreement") is made on {{agreement_date}} between:
+
+DISCLOSING PARTY: {{disclosing_party_name}}
+Address: {{disclosing_party_address}}
+Contact: {{disclosing_party_contact}}
+
+RECEIVING PARTY: {{receiving_party_name}}
+Address: {{receiving_party_address}}
+Contact: {{receiving_party_contact}}
+
+1. DEFINITION OF CONFIDENTIAL INFORMATION
+{{confidential_info_definition}}
+
+2. OBLIGATIONS OF RECEIVING PARTY
+{{receiving_party_obligations}}
+
+3. EXCEPTIONS TO CONFIDENTIALITY
+The obligations of confidentiality shall not apply to information that:
+{{confidentiality_exceptions}}
+
+4. DURATION
+{{agreement_duration}}
+
+5. REMEDIES FOR BREACH
+{{breach_remedies}}
+
+6. RETURN OF MATERIALS
+{{return_of_materials}}
+
+7. MISCELLANEOUS
+{{miscellaneous_provisions}}
+
+DISCLOSING PARTY SIGNATURE: ___________  DATE: _______
+{{disclosing_party_name}}
+
+RECEIVING PARTY SIGNATURE: ____________  DATE: _______
+{{receiving_party_name}}

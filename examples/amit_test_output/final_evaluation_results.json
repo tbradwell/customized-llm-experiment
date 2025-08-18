@@ -1,0 +1,16 @@
+{
+  "test_summary": {
+    "test_name": "Amit Test Case - Legal Document Generation",
+    "skeleton_file": "sekeleton_oracle.docx",
+    "ground_truth_file": "gt.docx",
+    "generated_file": "generated_contract.docx"
+  },
+  "document_statistics": {
+    "generated_words": 915,
+    "ground_truth_words": 2173,
+    "generated_chars": 5491,
+    "ground_truth_chars": 12536,
+    "length_ratio": 0.4210768522779567
+  },
+  "evaluation_metrics": {
+    "bleu": 
