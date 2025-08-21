@@ -150,3 +150,6 @@ experiments/
 mlruns/
 mlflow_experiments
 mlflow.db
+
+amit_test/
+amit_test2/
