@@ -42,19 +42,58 @@ def load_new_data(new_data_dir: str) -> str:
 
 def collect_text_nodes_from_fodt(soup: BeautifulSoup) -> List[Tuple[NavigableString, str]]:
     """
-    Walk FODT XML and collect text nodes without touching structure.
+    Walk FODT XML and collect meaningful document text nodes, skipping metadata.
     FODT uses office:document-content -> office:body -> office:text
     Text content is in <text:p>, <text:span>, etc. elements.
     """
     text_nodes = []
     
+    def is_meaningful_content(text_content: str) -> bool:
+        """Filter out metadata, timestamps, boolean values, and system info."""
+        text_content = text_content.strip()
+        
+        # Skip very short content
+        if len(text_content) < 3:
+            return False
+            
+        # Skip boolean values
+        if text_content.lower() in ['true', 'false']:
+            return False
+            
+        # Skip timestamps and dates (ISO format)
+        import re
+        if re.match(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}', text_content):
+            return False
+            
+        # Skip software versions and system info
+        if 'LibreOffice' in text_content or 'Linux_X86_64' in text_content:
+            return False
+            
+        # Skip pure numeric values (like version numbers)
+        if re.match(r'^\d+\.\d+$', text_content):
+            return False
+            
+        # Skip language codes
+        if re.match(r'^[a-z]{2}-[A-Z]{2}$', text_content):
+            return False
+            
+        # Skip time duration formats
+        if re.match(r'^PT\d+H\d+M$', text_content):
+            return False
+            
+        return True
+    
     def walk_node(node, context_path=""):
         if isinstance(node, NavigableString):
             text_content = str(node).strip()
-            # Only collect meaningful text content (skip whitespace-only)
-            if text_content and len(text_content) > 2:
+            # Only collect meaningful document content
+            if is_meaningful_content(text_content):
                 text_nodes.append((node, f"{context_path}: '{text_content[:50]}'"))
         elif isinstance(node, Tag):
+            # Skip metadata sections entirely
+            if node.name in ['meta:document-statistic', 'meta:creation-date', 'meta:generator', 'office:meta']:
+                return
+                
             # Build context showing ODT structure
             tag_info = node.name
             if node.get('text:style-name'):
@@ -104,7 +143,7 @@ def group_text_nodes_into_slices(text_nodes: List[Tuple[NavigableString, str]], 
 
 def edit_text_node_slice_with_llm(
     text_slice: List[Tuple[NavigableString, str]], 
-    client, model: str, user_instruction: str, new_data: str) -> None:
+    client, model: str, user_instruction: str, new_data: str, soup: BeautifulSoup) -> None:
     """
     Send a slice of text nodes to LLM for editing and replace in-place.
     Preserves exact FODT XML structure and formatting.
@@ -139,6 +178,10 @@ CONTENT UPDATING APPROACH:
     if not texts_to_edit:
         return
     
+    # Show format example from existing text
+    format_example = texts_to_edit[0] if texts_to_edit else "1. [Example format]"
+    current_count = len(texts_to_edit)
+    
     user_prompt = f"""{user_instruction}
 
 NEW DATA TO INCORPORATE:
@@ -147,13 +190,19 @@ NEW DATA TO INCORPORATE:
 CURRENT TEXT SEGMENTS TO UPDATE:
 {chr(10).join(texts_to_edit)}
 
-TASK: Update the text segments above by incorporating relevant information from the NEW DATA. 
-- Maintain the exact same numbered format (1. 2. 3. etc.)
-- Keep segments that don't relate to the new data unchanged
-- For relevant segments, update with new data while preserving the original style and legal phrasing
-- Ensure Hebrew/English mixed text layout remains intact
-- Only change the content/facts, preserve the writing style, tone, and structure
-- Return all segments in the same order, even if unchanged"""
+FORMAT EXAMPLE (use this exact style for any new entries):
+{format_example}
+
+TASK: Update the text segments above by incorporating relevant information from the NEW DATA.
+- Update existing segments 1-{current_count} with relevant new data
+- If the new data contains information about additional people/entities not covered by existing segments, add new numbered segments starting from {current_count + 1}
+- Use the EXACT same format as shown in the example above
+- Each person should have their own separate numbered entry
+- Maintain Hebrew/English mixed text layout exactly as shown
+- Preserve the original writing style, tone, and legal phrasing
+- Return ALL segments (existing + any new ones) in numerical order
+
+Example: If you have segments 1-3 and new data has 2 more people, return segments 1-5."""
 
     try:
         response = client.chat.completions.create(
@@ -169,32 +218,67 @@ TASK: Update the text segments above by incorporating relevant information from 
         # Parse response and update text nodes
         edited_lines = [line.strip() for line in edited_content.split('\n') if line.strip()]
         
-        text_index = 0
+        # Collect all numbered entries from response
+        parsed_entries = []
         for line in edited_lines:
             if line and '. ' in line:
                 try:
                     # Extract number and text: "1. edited text here"
                     num_str, edited_text = line.split('. ', 1)
-                    num = int(num_str) - 1  # Convert to 0-based index
-                    
-                    if 0 <= num < len(text_slice):
-                        text_node, _ = text_slice[num]
-                        original_text = str(text_node)
-                        
-                        # Only update if actually changed
-                        if edited_text != original_text.strip():
-                            # Preserve original whitespace structure
-                            if original_text.startswith(' '):
-                                edited_text = ' ' + edited_text
-                            if original_text.endswith(' '):
-                                edited_text = edited_text + ' '
-                            
-                            text_node.replace_with(edited_text)
-                            print(f"Updated: '{original_text[:50]}...' -> '{edited_text[:50]}...'")
-                
+                    num = int(num_str)
+                    parsed_entries.append((num, edited_text))
                 except (ValueError, IndexError) as e:
                     print(f"Warning: Could not parse LLM response line '{line[:50]}...': {e}")
                     continue
+        
+        # Sort entries by number
+        parsed_entries.sort(key=lambda x: x[0])
+        print(f"LLM returned {len(parsed_entries)} numbered entries, original had {len(text_slice)}")
+        
+        # Process all entries
+        for num, edited_text in parsed_entries:
+            zero_based_idx = num - 1  # Convert to 0-based index
+            
+            if 0 <= zero_based_idx < len(text_slice):
+                # Update existing text node
+                text_node, _ = text_slice[zero_based_idx]
+                original_text = str(text_node)
+                
+                # Only update if actually changed
+                if edited_text != original_text.strip():
+                    # Preserve original whitespace structure
+                    if original_text.startswith(' '):
+                        edited_text = ' ' + edited_text
+                    if original_text.endswith(' '):
+                        edited_text = edited_text + ' '
+                    
+                    text_node.replace_with(edited_text)
+                    print(f"Updated entry {num}: '{original_text[:50]}...' -> '{edited_text[:50]}...'")
+            
+            elif zero_based_idx >= len(text_slice):
+                # This is a new clause to add
+                print(f"Adding new clause {num}: '{edited_text[:50]}...'")
+                
+                if text_slice:
+                    # Find the last text node's parent to replicate structure
+                    last_text_node, _ = text_slice[-1]
+                    parent = last_text_node.parent
+                    
+                    if parent:
+                        # Create new element with same structure
+                        new_element = soup.new_tag(parent.name)
+                        # Copy all attributes to maintain formatting
+                        for attr, value in parent.attrs.items():
+                            new_element[attr] = value
+                        
+                        # Add the text content
+                        new_element.string = edited_text
+                        
+                        # Insert after the parent element
+                        parent.insert_after(new_element)
+                        print(f"Added new clause {num}: '{edited_text[:50]}...'")
+                    else:
+                        print(f"Warning: Could not find parent structure for new clause {num}")
                     
     except Exception as e:
         print(f"Warning: LLM editing failed for slice: {e}")
@@ -333,7 +417,7 @@ def main():
                         futures = []
                         for i, text_slice in enumerate(text_slices):
                             print(f"Submitting slice {i+1}/{len(text_slices)} ({len(text_slice)} text nodes)...")
-                            future = executor.submit(edit_text_node_slice_with_llm, text_slice, client, MODEL, USER_INSTRUCTION, new_data)
+                            future = executor.submit(edit_text_node_slice_with_llm, text_slice, client, MODEL, USER_INSTRUCTION, new_data, soup)
                             futures.append((i+1, future))
                         
                         # Wait for all slices to complete
@@ -349,7 +433,7 @@ def main():
                     for i, text_slice in enumerate(text_slices):
                         try:
                             print(f"Processing slice {i+1}/{len(text_slices)} ({len(text_slice)} text nodes)...")
-                            edit_text_node_slice_with_llm(text_slice, client, MODEL, USER_INSTRUCTION, new_data)
+                            edit_text_node_slice_with_llm(text_slice, client, MODEL, USER_INSTRUCTION, new_data, soup)
                             print(f"Completed slice {i+1}/{len(text_slices)}")
                         except Exception as e:
                             print(f"Error processing slice {i+1}: {e}")
