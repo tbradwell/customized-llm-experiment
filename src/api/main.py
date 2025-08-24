@@ -19,8 +19,12 @@ from .models import (
     ContractEvaluationRequest, ContractEvaluationResponse,
     HealthCheckResponse, ErrorResponse,
     BatchGenerationRequest, BatchGenerationResponse,
-    SkeletonUploadResponse, QualityReportResponse
+    SkeletonUploadResponse, QualityReportResponse,
+    SkeletonProcessingRequest, SkeletonProcessingResponse,
+    DocumentUploadResponse, SkeletonValidationResponse,
+    SkeletonStatsResponse
 )
+from .skeleton_endpoints import router as skeleton_router
 from ..core.quality_pipeline import QualityAssurancePipeline
 from ..core.document_processor import DocumentProcessor
 from ..utils.mlflow_tracker import MLflowTracker
@@ -50,6 +54,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include skeleton processor router
+app.include_router(skeleton_router)
 
 # Initialize core components
 quality_pipeline = QualityAssurancePipeline()

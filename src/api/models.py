@@ -244,3 +244,58 @@ class QualityReportResponse(BaseModel):
     strengths: List[str]
     generation_metadata: Dict[str, Any]
     report_generated_at: datetime
+
+
+# Skeleton Processor Models
+
+class SkeletonProcessingRequest(BaseModel):
+    """Request model for skeleton processing."""
+    upload_id: str = Field(..., description="ID of uploaded documents")
+    async_processing: bool = Field(default=True, description="Process in background")
+
+
+class SkeletonProcessingResponse(BaseModel):
+    """Response model for skeleton processing."""
+    success: bool = Field(..., description="Whether processing was successful")
+    job_id: str = Field(..., description="Job ID for tracking")
+    status: str = Field(..., description="Processing status")
+    message: str = Field(..., description="Status message")
+    skeleton_id: Optional[str] = Field(None, description="Generated skeleton ID")
+    template_download_url: Optional[str] = Field(None, description="URL to download template")
+    stats_url: Optional[str] = Field(None, description="URL for detailed statistics")
+    processing_time: Optional[float] = Field(None, description="Processing time in seconds")
+    async_processing: Optional[bool] = Field(None, description="Whether processing is async")
+    status_check_url: Optional[str] = Field(None, description="URL to check status")
+
+
+class DocumentUploadResponse(BaseModel):
+    """Response model for document upload."""
+    success: bool = Field(..., description="Whether upload was successful")
+    upload_id: str = Field(..., description="Unique upload identifier")
+    documents_count: int = Field(..., description="Number of documents uploaded")
+    filenames: List[str] = Field(..., description="List of uploaded filenames")
+    validation_passed: bool = Field(..., description="Whether validation passed")
+    validation_issues: List[str] = Field(default=[], description="Validation issues found")
+    total_size_mb: float = Field(..., description="Total size of uploaded files in MB")
+
+
+class SkeletonValidationResponse(BaseModel):
+    """Response model for skeleton validation."""
+    success: bool = Field(..., description="Whether validation was successful")
+    valid_skeleton: bool = Field(..., description="Whether skeleton is valid")
+    validation_results: Dict[str, Any] = Field(..., description="Detailed validation results")
+    issues: List[str] = Field(default=[], description="Issues found during validation")
+    filename: str = Field(..., description="Name of validated file")
+    file_size_mb: float = Field(..., description="File size in MB")
+
+
+class SkeletonStatsResponse(BaseModel):
+    """Response model for skeleton processing statistics."""
+    job_id: str = Field(..., description="Processing job ID")
+    skeleton_id: str = Field(..., description="Generated skeleton ID")
+    processing_completed_at: datetime = Field(..., description="When processing completed")
+    total_processing_time: float = Field(..., description="Total processing time in seconds")
+    input_statistics: Dict[str, Any] = Field(..., description="Input document statistics")
+    algorithm_parameters: Dict[str, Any] = Field(..., description="Algorithm parameters used")
+    clustering_statistics: Dict[str, Any] = Field(..., description="Clustering results")
+    output_information: Dict[str, Any] = Field(..., description="Output file information")
