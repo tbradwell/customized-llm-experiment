@@ -1,34 +1,30 @@
 #!/usr/bin/env python3
 """
-Simple pipeline:
-  DOCX -> HTML (LibreOffice) -> slice HTML -> LLM (per slice) -> reassemble HTML -> DOCX
+FODT-based document editing pipeline:
+  DOCX -> FODT (LibreOffice) -> collect text nodes -> LLM (per slice) -> update FODT -> DOCX
 
-Why heading-based slicing?
-- Smaller prompts (cheaper/faster)
-- Scope control: edit only the current section
-- Guardrails ensure tags/attrs/styles stay intact
+Why FODT over HTML?
+- Better layout/formatting preservation 
+- Native LibreOffice format for more faithful conversion
+- Granular text node editing without structural changes
 
 Requirements:
-  pip install openai beautifulsoup4 lxml html5lib
+  pip install openai beautifulsoup4 lxml
   LibreOffice installed (soffice in PATH)
   export OPENAI_API_KEY=...
 
 Usage: edit the CONFIG paths at the bottom and run.
 """
 
-import os, sys, subprocess, shutil, tempfile
+import os, subprocess, shutil, tempfile
 from pathlib import Path
 from typing import List, Tuple
-from bs4 import BeautifulSoup, Tag, NavigableString
+from bs4 import BeautifulSoup, NavigableString, Tag
 from openai import OpenAI
-import math
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
-import time
-from typing import List, Tuple
+from concurrent.futures import ThreadPoolExecutor
 
-# from src.processors.data_loader import DataLoader  # Import removed to avoid module error
-
+from src.utils.rag import FODTTextMatcher
 
 CONCURRENCY = 3
 MAX_RETRIES = 3
@@ -42,7 +38,7 @@ def load_new_data(new_data_dir: str) -> str:
     from src.processors.data_loader import DataLoader
     
     data_loader = DataLoader()
-    return data_loader.load_new_data(new_data_dir)
+    return data_loader.load_new_data(new_data_dir, is_flat_text=False)
 
 def collect_text_nodes_from_fodt(soup: BeautifulSoup) -> List[Tuple[NavigableString, str]]:
     """
@@ -276,199 +272,7 @@ def soffice_fodt_to_docx(fodt_path: Path, out_docx: Path) -> None:
             out_docx.unlink()
         produced.replace(out_docx)
 
-# -----------------------
-# HTML slicing (heading-based)
-# -----------------------
-
-def is_heading_like(node: Tag) -> bool:
-    if not isinstance(node, Tag):
-        return False
-    if node.name in ("h1","h2","h3","h4","h5","h6"):
-        return True
-    if node.name == "p":
-        text = node.get_text(strip=True)
-        if not text:
-            return False
-        # Heuristics: short + centered or typical LibreOffice title classes
-        style = (node.get("style") or "").lower()
-        classes = " ".join(node.get("class", [])).lower()
-        if len(text) <= 40 and ("text-align:center" in style or "t25" in classes or "t29" in classes):
-            return True
-        # Hebrew "חלק ..." often denotes sections
-        if "חלק " in text:
-            return True
-    return False
-
-def approx_tokens(s: str) -> int:
-    # Crude but safe across languages: ~4 chars/token
-    return max(1, math.ceil(len(s) / 4))
-
-def slice_by_headings(full_html: str, token_budget: int = 1500) -> Tuple[BeautifulSoup, List[List[Tag]]]:
-    """
-    Returns soup and a list of slices (each slice is a list of <body> child Tags).
-    - First partition by headings (semantic sections).
-    - Then, within each section, split into sub-slices so each is <= token_budget.
-    This avoids timeouts by keeping each LLM call small.
-    """
-    soup = BeautifulSoup(full_html, "lxml-xml")  # XHTML-friendly
-    body = soup.find("body")
-    if not body:
-        raise ValueError("No <body> in HTML.")
-
-    # 1) Collect top-level blocks under <body>
-    blocks: List[Tag] = [n for n in body.children if isinstance(n, Tag)]
-    if not blocks:
-        return soup, []
-
-    # 2) Group into sections by headings
-    sections: List[List[Tag]] = []
-    current: List[Tag] = []
-    for node in blocks:
-        if is_heading_like(node):  # <-- assumes you already have this helper
-            if current:
-                sections.append(current)
-                current = []
-            current = [node]
-        else:
-            if not sections and not current:
-                # preface content before any heading
-                current = [node]
-            else:
-                current.append(node)
-    if current:
-        sections.append(current)
-
-    # 3) Within each section, enforce a token budget by splitting on node boundaries
-    def split_section_to_budget(nodes: List[Tag]) -> List[List[Tag]]:
-        out: List[List[Tag]] = []
-        cur: List[Tag] = []
-        cur_tokens = 0
-        for n in nodes:
-            n_str = str(n)
-            t = approx_tokens(n_str)
-            # if adding this node would exceed budget and we already have something, start a new slice
-            if cur and cur_tokens + t > token_budget:
-                out.append(cur)
-                cur = [n]
-                cur_tokens = t
-            else:
-                cur.append(n)
-                cur_tokens += t
-        if cur:
-            out.append(cur)
-        return out
-
-    slices: List[List[Tag]] = []
-    for section in sections:
-        slices.extend(split_section_to_budget(section))
-
-    return soup, slices
-
-# -----------------------
-# LLM call with guardrails
-# -----------------------
-
-def strip_code_fences(s: str) -> str:
-    s = s.strip()
-    if s.startswith("```"):
-        s = s.strip("`")
-        nl = s.find("\n")
-        if nl != -1:
-            s = s[nl+1:]
-    return s.strip()
-
-def call_llm_on_html_snippet(
-    client: OpenAI,
-    model: str,
-    system_prompt: str,
-    user_instruction: str,
-    snippet_html: str,
-    timeout_s: int = 60,
-) -> str:
-    """
-    Asks the model to edit TEXT ONLY and return a clean HTML snippet (no <html/head/body>).
-    """
-    prompt = (
-        f"{user_instruction}\n\n"
-        "Rules (MANDATORY):\n"
-        "1) Edit TEXT ONLY. Do NOT add/remove/reorder HTML tags.\n"
-        "2) Preserve ALL attributes (class, style, dir, id, etc.).\n"
-        "3) Do NOT introduce <html>, <head> or <body>—return only the edited snippet.\n"
-        "4) Keep RTL/LTR direction exactly as-is.\n"
-        "5) Do NOT add explanations or backticks.\n\n"
-        "SNIPPET START\n"
-        f"{snippet_html}\n"
-        "SNIPPET END"
-    )
-
-    resp = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt},
-        ],
-        timeout=timeout_s,
-    )
-    out = strip_code_fences(resp.choices[0].message.content or "")
-    # Fast tolerance fix: if the model accidentally wrapped the snippet in <html>… trim inner <body>
-    if "<body" in out.lower():
-        try:
-            s2 = BeautifulSoup(out, "html5lib")
-            body = s2.find("body")
-            if body:
-                out = "".join(str(x) for x in body.contents)
-        except Exception:
-            pass
-    return out
-
-# -----------------------
-# Reassembly
-# -----------------------
-
-def rebuild_html_from_slices(original_soup: BeautifulSoup, edited_slices_html: List[str]) -> str:
-    """
-    Creates a new XHTML doc with original <head> and <body attrs>, and
-    concatenates edited slices in order.
-    """
-    head = original_soup.find("head")
-    body = original_soup.find("body")
-
-    out = BeautifulSoup(features="lxml-xml")
-    new_html = out.new_tag("html")
-    # preserve original html attrs if present
-    html_tag = original_soup.find("html")
-    if html_tag:
-        for k, v in html_tag.attrs.items():
-            new_html.attrs[k] = v
-    out.append(new_html)
-
-    new_head = out.new_tag("head")
-    if head:
-        for child in head.children:
-            if isinstance(child, Tag):
-                new_head.append(BeautifulSoup(str(child), "lxml-xml"))
-    new_html.append(new_head)
-
-    new_body = out.new_tag("body")
-    if body:
-        for k, v in body.attrs.items():
-            new_body.attrs[k] = v
-
-    for frag in edited_slices_html:
-        # Parse the snippet and extend
-        frag_soup = BeautifulSoup(frag, "lxml-xml")
-        # If the snippet contains a single wrapper element, keep it; otherwise, add all children
-        if frag_soup.contents:
-            # append all top-level nodes
-            for node in frag_soup.contents:
-                if isinstance(node, Tag):
-                    new_body.append(node)
-                else:
-                    # ignore whitespace-only strings to keep things clean
-                    if str(node).strip():
-                        new_body.append(node)
-    new_html.append(new_body)
-    return str(out)
+# Removed unused HTML slicing and reassembly functions since this is now a FODT-focused pipeline
 
 # -----------------------
 # Main
@@ -510,7 +314,11 @@ def main():
         print(f"Grouped into {len(text_slices)} slices for LLM processing")
 
         # get new data
-        new_data = load_new_data(NEW_DATA_DIR)
+        matcher = FODTTextMatcher(
+            os.getenv("OPENAI_API_KEY"), 'text-embedding-3-small')
+        list_new_data = matcher._load_new_data(NEW_DATA_DIR)
+        matches = matcher.find_best_matches(text_slices[0], list_new_data, top_k=2)
+        new_data = '\n\n'.join([m['text'] for m in matches])
 
         # 5) Edit each slice with LLM (with proper OpenAI integration)
         if text_slices:

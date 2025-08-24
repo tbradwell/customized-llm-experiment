@@ -17,7 +17,7 @@ class DataLoader:
     def __init__(self):
         self.data_reader = DataReader()
     
-    def load_new_data(self, new_data_dir: str) -> str:
+    def load_new_data(self, new_data_dir: str, is_flat_text: bool = True) -> str:
         """Load and combine new data from directory."""
         data_path = Path(new_data_dir)
         
@@ -40,7 +40,17 @@ class DataLoader:
         raw_contents = self._process_data_files(data_files)
         
         # Clean and combine content
-        combined_content = "\n\n".join(raw_contents)
+        if not is_flat_text:
+
+            content_list = []
+            for c in raw_contents:
+                content_list.append(self.clean_data(c))
+
+            return content_list
+
+        else:
+            combined_content = '\n\n'.join(raw_contents)
+
         cleaned_content = self.clean_data(combined_content)
         
         logger.info(f"Loaded and cleaned data: {len(cleaned_content)} characters")
